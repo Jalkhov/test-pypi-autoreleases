@@ -11,8 +11,8 @@ on:
         description: 'Release name'   
         required: true
         default: ''
-      release_notes:
-        description: 'Release notes'   
+      raw_version:
+        description: 'Raw verions numbers'   
         required: true
         default: ''
 
@@ -50,6 +50,6 @@ jobs:
           tag_name: ${{ github.event.inputs.tag_name }}
           release_name: ${{ github.event.inputs.release_name }}
           body: |
-            ${{ github.event.inputs.release_notes }}
+            Release notes: See [HERE](https://github.com/Jalkhov/test-pypi-autoreleases/blob/main/CHANGELOGS.md#v${{ github.event.inputs.raw_version }})
           draft: false
           prerelease: false
