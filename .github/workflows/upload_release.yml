@@ -1,3 +1,6 @@
+name: Upload and Create release
+runs-on: ubuntu-latest
+
 on: 
   workflow_dispatch:
     inputs:
@@ -10,11 +13,26 @@ on:
         required: true
         default: ''
 
-name: Create Release
 jobs:
-  build:
+  upload:
+    name: Upload to PyPi
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TESTPYPI_PASSWORD }}
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload --repository testpypi dist/* --skip-existing
+
+  release:
     name: Create Release
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
