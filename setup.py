@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='testing-pypi-autorelease',
-    version='0.0.7',
+    version='0.0.8',
     description='For testing',
     long_description=long_description,
     long_description_content_type='text/markdown',
