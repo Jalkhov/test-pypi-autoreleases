@@ -1,24 +1,52 @@
-name: Upload Python Package
+name: Upload and Create release
+runs-on: ubuntu-latest
 
-on:
-  release:
-    types: [created]
+on: 
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag'
+        required: true
+        default: ''
+      release_name:
+        description: 'Release name'   
+        required: true
+        default: ''
 
 jobs:
-  deploy:
-    runs-on: ubuntu-20.04
-
+  upload:
+    name: Upload to PyPi
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install setuptools wheel twine
-    - name: Build and publish
-      env:
-        TWINE_USERNAME: __token__
-        TWINE_PASSWORD: ${{ secrets.TESTPYPI_PASSWORD }}
-      run: |
-        python setup.py sdist bdist_wheel
-        twine upload --repository testpypi dist/*
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install setuptools wheel twine
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.TESTPYPI_PASSWORD }}
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload --repository testpypi dist/*
+
+  release:
+    name: Create Release
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.tag_name }}
+          release_name: ${{ github.event.inputs.release_name }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
