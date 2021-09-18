@@ -7,3 +7,4 @@ Repo for test automation PyPI releases with Github Actions
 * Test 4 Create release but dont trigger upload_to_pypi workflow, i will merge two workflows
 * Test 5 Failed due to workflow file error
 * Test 6 Successfully: Uploaded to PyPi and github release created
+* Test 7 Successfully: But redirection in release notes to CHANGELOGS.md its a little ugly, i will try with multiline input in manual workflow
