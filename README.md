@@ -1,6 +1,8 @@
 # test-pypi-autoreleases
 Repo for test automation PyPI releases with Github Actions
 
+[TestPyPi package](https://test.pypi.org/project/testing-pypi-autorelease/)
+
 * Test 1 Failed due to workflow file error
 * Test 2 Successfully
 * Test 3 Create release but dont trigger upload_to_pypi workflow
